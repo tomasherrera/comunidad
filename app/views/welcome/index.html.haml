@@ -1,0 +1,91 @@
+- if user_signed_in?
+  .container
+    .row.profile
+      .col-md-3
+        .profile-sidebar
+          / SIDEBAR USERPIC
+          .profile-userpic
+            %img.img-responsive{:alt => "", :src => "#{current_user.profile_picture}?type=large"}/
+          / END SIDEBAR USERPIC
+          / SIDEBAR USER TITLE
+          .profile-usertitle
+            .profile-usertitle-name
+              = "#{current_user.first_name} #{current_user.last_name}"
+            .profile-usertitle-company-name
+              Playstation Fans Barranquilla
+            .profile-usertitle-email
+              = current_user.email
+          / END SIDEBAR USER TITLE
+          / SIDEBAR BUTTONS
+          .profile-userbuttons
+            //%button.btn.btn-success.btn-sm{:type => "button"} Follow
+            //%button.btn.btn-danger.btn-sm{:type => "button"} Message
+          / END SIDEBAR BUTTONS
+          / SIDEBAR MENU
+          .profile-usermenu
+            %ul.nav
+              %li{"ng-class" => "{active: isSelectedTab(1)}"}
+                %a{:href => "", "ng-click" => "selectTab(1)"}
+                  %i.fa.fa-home
+                  Sumario
+              %li{"ng-class" => "{active: isSelectedTab(2)}"}
+                %a{:href => "", "ng-click" => "selectTab(2)"}
+                  %i.fa.fa-gamepad
+                  Mis Juegos
+              %li{"ng-class" => "{active: isSelectedTab(3)}"}
+                %a{:href => "", "ng-click" => "selectTab(3)"}
+                  %i.fa.fa-trophy
+                  Trofeos
+              %li{"ng-class" => "{active: isSelectedTab(4)}"}
+                %a{:href => "", "ng-click" => "selectTab(4)"}
+                  %i.fa.fa-wrench
+                  Configuración
+          / END MENU
+      .col-md-6
+        .profile-content{"ng-show" => "isSelectedTab(1)"}
+          - Game.all.limit(10).each do |game|
+            = image_tag(game.small_cover)
+            %legend
+              = link_to game.title, "http://www.3djuegos.com#{game.link}"
+            = game.description
+            %hr
+        .profile-content{"ng-show" => "isSelectedTab(3)"}
+          Cofiguración de Cuenta
+        .profile-content{"ng-show" => "isSelectedTab(4)"}
+          Muy Pronto!
+      %div{"ng-class" => "{'col-md-9': not_adding_game, 'col-md-6': adding_game}", "ng-show" => "isSelectedTab(2)"}
+        .profile-content
+          %legend
+            Mis Juegos
+          .well
+            %button.btn.btn-default.btn-sm{:type => "button", "ng-click" => "startAddingGame()"}
+              %i.fa.fa-plus{"aria-hidden" => "true"}
+              Agregar Juego
+
+          .row{"ng-repeat" => "games in current_user_games"}
+            .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "user_game in games"}
+              .thumbnail
+                %img{"ng-src" => "{{user_game.game.large_cover}}", :style => "width: 570px"}
+                  //.caption
+                  //%h5{:style => "color:#6495ED"}
+                  //  = game.title
+                  //%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, soluta, eligendi doloribus sunt minus amet sit debitis repellat. Consectetur, culpa itaque odio similique suscipit
+                  //%a.btn.btn-danger.btn-xs.pull-right{:href => "#", :role => "button"}
+                  //  %i.fa.fa-trash
+                  //%a.btn.btn-info.btn-xs{:href => "#", :role => "button"}
+                  //  %i.fa.fa-tag
+                  //  Vender
+                  //%a.btn.btn-default.btn-xs{:href => "#", :role => "button"} Detalle
+      .col-md-3{"ng-show" => "adding_game"}
+        .game-search
+          %button.close{"aria-label" => "Cerrar", :type => "button"}
+            %span{"aria-hidden" => "true"} &#215;
+          .game-search-text
+            Buscar Juego
+    .row.profile
+      .col-md-12
+
+
+
+  %br/
+  %br/

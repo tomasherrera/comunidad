@@ -1,0 +1,37 @@
+!!!
+%html{"ng-app" => "comunidad"}
+  %head
+    %title Playstation Fans
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+    %link{:href => "//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css", :rel => "stylesheet"}
+  %body{"ng-controller" => "WelcomeController as welcome"}
+    %nav.navbar.navbar-default
+      .container
+        .container-fluid
+          .navbar-header
+            %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+              %span.sr-only Toggle navigation
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            = link_to "", :class => "navbar-brand" do
+              Playstation Fans Barranquilla
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            %ul.nav.navbar-nav
+              %li{"ng-class" => "dashboard_style"}
+                = link_to "" do
+                  Inicio
+                  %span.sr-only (current)
+              - if user_signed_in?
+                %li
+                  = link_to current_user.first_name, ''
+            %ul.nav.navbar-nav.navbar-right
+              %li
+                - if user_signed_in?
+                  = link_to("Cerrar Sesión", destroy_user_session_path, :method => :delete)
+                - else
+                  = link_to "Entra con Facebook", user_omniauth_authorize_path(:facebook)
+    .container
+      = yield

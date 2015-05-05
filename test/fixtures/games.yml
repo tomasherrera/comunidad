@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  3djuegos_score: MyString
+  genre: MyText
+  platform: MyString
+  release_date: 2015-05-03 17:37:40
+  small_cover: MyString
+  large_cover: MyString
+
+two:
+  title: MyString
+  description: MyText
+  3djuegos_score: MyString
+  genre: MyText
+  platform: MyString
+  release_date: 2015-05-03 17:37:40
+  small_cover: MyString
+  large_cover: MyString

@@ -12,5 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
+//= require angular
+//= require angular-route
+//= require angular-resource
+//= require app
 //= require_tree .
+
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
+})

@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users
+  get 'user_games' => "user_games#current_user_games"
+  resources :users do
+    resources :user_games
+  end
+  get 'games/index'
+
+  get 'welcome/index'
+  root 'welcome#index'
+
+  devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
+  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
