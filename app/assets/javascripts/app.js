@@ -1,24 +1,54 @@
 (function() {
-  var app = angular.module('comunidad', ["ngResource", 'ngRoute']);
+  var app = angular.module('comunidad', ["ngResource", 'ngRoute', 'ngAnimate', 'ng-rails-csrf']);
 
-  /*app.config(function($routeProvider) {
+  app.config(function($routeProvider) {
     $routeProvider
-        .when('/panel', {
-            templateUrl: '/panel.html'
-        })
         .when('/', {
-            templateUrl: '/index.html'
+          templateUrl: '/index.html'
+        })
+        .when('/games/:id', {
+          templateUrl: '/gameview.html'
         })
         ;
   });
-  */
 
   app.controller("WelcomeController", function($scope, $resource, $routeParams, $location) {
-    var AllUserGames = $resource("/user_games.json", {}, {});
-    $scope.current_user_games = [];
+    var OwnedGames = $resource("/ownedgames.json", {}, {});
+    var AllGames = $resource("/games/index.json", {}, {});
+    $scope.current_owned_games = [];
+    $scope.ownedgames_ids = [];
+    $scope.games = [];
     $scope.tab = 2;
     $scope.not_adding_game = true;
     $scope.adding_game = false;
+    $scope.game_owned = false;
+    $scope.checked = true;
+    $scope.games_loaded = false;
+    $scope.adding = "not_adding";
+    $scope.focus = false;
+
+    $scope.changeView = function(view){
+      $location.path(view);
+    };
+
+    $scope.isGameOwned = function(game_id){
+      return $scope.ownedgames_ids.indexOf(game_id) > -1
+    };
+
+    $scope.saveOwnedGame = function(game){
+      var ownedgame = new OwnedGames();
+      ownedgame.user_id = "1";
+      ownedgame.game_id = game.id;
+      ownedgame.formato = "Fisico";
+      ownedgame.$save().then(
+        function( value ){
+          $scope.getAllOwnedGames();
+        },
+        function( error ){
+          alert("Parece que ya agregaste este juego a tu libreria");
+        }
+      );
+    };
 
     $scope.selectTab = function(tab){
       $scope.tab = tab;
@@ -28,19 +58,70 @@
       return $scope.tab === tab;
     };
 
-    $scope.startAddingGame = function(){
-      $scope.not_adding_game = false;
-      $scope.adding_game = true;
-    }
+    $scope.stopAddingGame = function(){
+      $scope.not_adding_game = true;
+      $scope.adding_game = false;
+      $scope.adding = "not_adding";
+    };
 
-    $scope.getAllUserGames = function(){
-      AllUserGames.get().$promise.then(
+    $scope.getAllOwnedGames = function(){
+      OwnedGames.get().$promise.then(
         function( value ){
-          console.log(value);
-          $scope.current_user_games = value.current_user_games;
+          $scope.current_owned_games = value.current_owned_games;
+          $scope.ownedgames_ids = value.ownedgames_ids;
         },
         function( error ){/*Do something with error*/}
       );
+    };
+
+    var OwnedGame = $resource('/ownedgames/:id', {id: "@id"} , {"update": {method: "PUT"}});
+
+    $scope.delete = function(game, ownedgame_id, idx){
+      var r = confirm("Estás seguro que deseas eliminar a " + game.title + " de tu libreria de juegos?");
+      if (r == true){
+        OwnedGame.remove({ id:ownedgame_id }).$promise.then(
+          //success
+          function( value ){
+            $scope.getAllOwnedGames();
+          },
+          //error
+          function( error ){/*Do something with error*/}
+        );
+      }
+    };
+
+    var Game = $resource("/games/:id.json", {id: "@id"}, {});
+
+    $scope.get_game = function(game_id){
+      Game.get({id:game_id}).$promise.then(
+        function( value ){
+          $scope.game = value.game;
+          $scope.changeView('/games/' + game_id);
+        },
+        function( error ){/*Do something with error*/}
+      );
+    };
+
+    $scope.getAllGames = function(){
+      if($scope.games_loaded){
+        $scope.adding_game = true;
+        $scope.not_adding_game = false;
+        $scope.adding = "adding";
+        $scope.focus = true;
+      }else{
+        AllGames.get().$promise.then(
+          function( value ){
+            $scope.games_loaded = true;
+            $scope.games = value.games;
+            $scope.adding_game = true;
+            $scope.not_adding_game = false;
+            $scope.adding = "adding";
+            $scope.focus = true;
+          },
+          function( error ){/*Do something with error*/}
+        );
+      }
+
     };
 
 
@@ -48,14 +129,12 @@
       if ($location.path() === "/"){
         $scope.dashboard_style = "active";
         $scope.profile_style = "";
-      }else if ($location.path() === "/panel"){
-        $scope.getAllProducts();
-        $scope.profile_style = "active";
-        $scope.dashboard_style = "";
+      }else if ($location.path() === "/games/" + $routeParams.id){
+        $scope.get_game($routeParams.id);
       };
     };
 
-    $scope.getAllUserGames();
+    $scope.getAllOwnedGames();
     $scope.activeWindow();
   });
 

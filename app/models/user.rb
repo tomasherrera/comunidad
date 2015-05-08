@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
-  has_many :user_games
+  has_many :ownedgames
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 

@@ -1,0 +1,17 @@
+.container
+  .profile-content{"ng-controller" => "WelcomeController as welcome"}
+    .row.back
+      %button.btn.btn-info.btn-xs{:type => "button", "ng-click" => "changeView('/')"}
+        %i.fa.fa-backward
+        Atrás
+    .wrap.clearfix
+      / Avatar
+      .col-sm-3.col-xs-12
+        %img{:alt => "", "ng-src" => "{{game.large_cover}}", :style => "width: 270px"}
+      / End Avatar
+      .col-sm-9.col-xs-12
+        .col-xs-12.content
+          %legend
+            {{game.title}}
+          %p
+            {{game.description}}

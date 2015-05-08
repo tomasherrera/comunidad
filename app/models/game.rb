@@ -1,3 +1,3 @@
 class Game < ActiveRecord::Base
-  has_many :user_games
+  has_many :ownedgames
 end

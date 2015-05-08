@@ -38,6 +38,14 @@
                   Trofeos
               %li{"ng-class" => "{active: isSelectedTab(4)}"}
                 %a{:href => "", "ng-click" => "selectTab(4)"}
+                  %i.fa.fa-users
+                  Amigos
+              %li{"ng-class" => "{active: isSelectedTab(5)}"}
+                %a{:href => "", "ng-click" => "selectTab(5)"}
+                  %i.fa.fa-shopping-cart
+                  Mi Tienda
+              %li{"ng-class" => "{active: isSelectedTab(6)}"}
+                %a{:href => "", "ng-click" => "selectTab(6)"}
                   %i.fa.fa-wrench
                   Configuración
           / END MENU
@@ -58,30 +66,39 @@
           %legend
             Mis Juegos
           .well
-            %button.btn.btn-default.btn-sm{:type => "button", "ng-click" => "startAddingGame()"}
+            %button.btn.btn-default.btn-sm{:type => "button", "ng-click" => "startAddingGame(); getAllGames();"}
               %i.fa.fa-plus{"aria-hidden" => "true"}
               Agregar Juego
 
-          .row{"ng-repeat" => "games in current_user_games"}
-            .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "user_game in games"}
+          .row{"ng-repeat" => "games in current_owned_games", "ng-click" => "stopAddingGame()"}
+            .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "ownedgame in games"}
               .thumbnail
-                %img{"ng-src" => "{{user_game.game.large_cover}}", :style => "width: 570px"}
-                  //.caption
-                  //%h5{:style => "color:#6495ED"}
-                  //  = game.title
-                  //%p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, soluta, eligendi doloribus sunt minus amet sit debitis repellat. Consectetur, culpa itaque odio similique suscipit
-                  //%a.btn.btn-danger.btn-xs.pull-right{:href => "#", :role => "button"}
-                  //  %i.fa.fa-trash
-                  //%a.btn.btn-info.btn-xs{:href => "#", :role => "button"}
-                  //  %i.fa.fa-tag
-                  //  Vender
-                  //%a.btn.btn-default.btn-xs{:href => "#", :role => "button"} Detalle
+                %img{"ng-src" => "{{ownedgame.game.small_cover}}", :style => "width: 570px;", "ng-class" => "adding"}
+                %div{"ng-hide" => "adding_game"}
+                  .caption{"ng-class" => "ownedgame.game.platform"}
+                    .game-hover-title {{ownedgame.game.title}}
+                    %p
+                      %a.label.label-danger{:href => "", "ng-click" => "delete(ownedgame.game, ownedgame.id, $index)"} Eliminar
+                      %a.label.label-default{:href => "", "ng-click" => "get_game(ownedgame.game.id)"} Ver más
+
       .col-md-3{"ng-show" => "adding_game"}
         .game-search
-          %button.close{"aria-label" => "Cerrar", :type => "button"}
+          %button.close{"aria-label" => "Cerrar", :type => "button", "ng-click" => "stopAddingGame()"}
             %span{"aria-hidden" => "true"} &#215;
           .game-search-text
-            Buscar Juego
+            %input.form-control{:placeholder => "Buscar Juego", "ng-model" => "query.title", "ng-focus" => "focus"}
+          .search-result-box.media{"ng-repeat" => "game in games | filter:query | limitTo:20 | orderBy: '-platform'", "ng-show" => "query.title.length > 2", "ng-class" => "game.platform"}
+            .media-left
+              %a{:href => ""}
+                %img.media-object.search-result{:alt => "{{game.title}}", "ng-src" => "{{game.small_cover}}"}/
+            .media-body
+              %h4.media-heading.search-result-text
+                {{game.title}}
+              %p
+                {{game.platform}}
+                %button.btn.btn-primary.btn-xs{:type => "button", "ng-hide" => "isGameOwned(game.id)", "ng-click" => "saveOwnedGame(game)"}
+                  Agregar
+
     .row.profile
       .col-md-12
 
