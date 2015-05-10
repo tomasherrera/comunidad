@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   get 'home' => "welcome#home"
   get "index" => "welcome#index"
-  #get "*path" => "welcome#home"
+  get "*path" => "welcome#home"
   get 'gameview' => "welcome#gameview"
 
   devise_for :users, :controllers => { omniauth_callbacks: 'omniauth_callbacks' }
