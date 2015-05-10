@@ -16,4 +16,4 @@ test:
 
 production:
   <<: *default
-  database: db/production
+  database: playstationfans_production
