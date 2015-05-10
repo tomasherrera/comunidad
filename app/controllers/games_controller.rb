@@ -11,6 +11,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @game_dlc = Game.find(@game.game_dlc_id) unless @game.game_dlc_id.nil?
     respond_to do |format|
       format.json
     end

@@ -6,12 +6,78 @@
         Atrás
     .wrap.clearfix
       / Avatar
-      .col-sm-3.col-xs-12
-        %img{:alt => "", "ng-src" => "{{game.large_cover}}", :style => "width: 270px"}
+      .col-sm-3.col-xs-12.game-img-details
+        .thumbnail
+          %img{:alt => "", "ng-src" => "{{game.large_cover}}", :style => "width: 270px", "ng-hide" => "game.large_cover === 'not_available'"}
+          %img{:alt => "", "ng-src" => "{{game.small_cover}}", :style => "width: 270px", "ng-show" => "game.large_cover === 'not_available'"}
       / End Avatar
       .col-sm-9.col-xs-12
         .col-xs-12.content
-          %legend
+          %h3
             {{game.title}}
-          %p
-            {{game.description}}
+            \-
+            {{game.platform}}
+          .description-box
+            %p{"ng-init" => "limit= 460; more = false"}
+              {{game.description | limitTo:limit}}
+              %span{"ng-hide" => "game.description.length <= limit"}
+                \...
+              %a{href: "", "ng-click" => "limit = game.description.length; more = true", "ng-hide" => "more || game.description.length <= limit"} Ver más
+              %a{href: "", "ng-click" => "limit = 460; more = false", "ng-show" => "more"} Ver menos
+          .game-details
+            %p{"ng-hide" => "game.genre === null"}
+              %b
+                Genero:
+              %span{"ng-repeat" => "genre in game.genre"}
+                %a{href: ""}
+                  {{genre}}
+                %span{"ng-show" => "($index + 1) < game.genre.length "}
+                  |
+            %p{"ng-hide" => "game.developer === null"}
+              %b
+                Desarrollador:
+              {{game.developer}}
+            %p{"ng-hide" => "game.publisher === null"}
+              %b
+                Distribuidor:
+              {{game.publisher}}
+            %p{"ng-hide" => "game.players === null"}
+              %b
+                Jugadores:
+              {{game.players}}
+            %p{"ng-hide" => "game.duration === null"}
+              %b
+                Duración:
+              {{game.duration}}
+            %p{"ng-hide" => "game.release_date === null"}
+              %b
+                Fecha de lanzamiento:
+              {{game.release_date}}
+            %p{"ng-hide" => "game.game_dlc_title === null"}
+              %b
+                Tipo:
+              DLC de
+              %a{"href" => "", "ng-click" => "get_game(game.game_dlc_id)"}
+                {{game.game_dlc_title}}
+    %hr
+    %ul.nav.nav-tabs
+      %li.active{:role => "presentation"}
+        %a{:href => ""}
+          Comentarios
+          %span.badge
+            0
+      %li{:role => "presentation"}
+        %a{:href => ""}
+          Gameplays
+          %span.badge
+            0
+      %li{:role => "presentation"}
+        %a{:href => ""}
+          Imágenes
+          %span.badge
+            0
+      %li{:role => "presentation"}
+        %a{:href => ""}
+          Reseñas
+          %span.badge
+            0

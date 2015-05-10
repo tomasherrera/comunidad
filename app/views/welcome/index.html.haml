@@ -73,7 +73,7 @@
           .row{"ng-repeat" => "games in current_owned_games", "ng-click" => "stopAddingGame()"}
             .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "ownedgame in games"}
               .thumbnail
-                %img{"ng-src" => "{{ownedgame.game.small_cover}}", :style => "width: 570px;", "ng-class" => "adding"}
+                %img.img-thumbnail{"ng-src" => "{{ownedgame.game.small_cover}}", :style => "width: 570px;", "ng-class" => "adding"}
                 %div{"ng-hide" => "adding_game"}
                   .caption{"ng-class" => "ownedgame.game.platform"}
                     .game-hover-title {{ownedgame.game.title}}

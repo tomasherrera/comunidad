@@ -83,4 +83,97 @@ namespace :populate_games do
     end
   end
 
+  task populate_game_datails_ps4: :environment do
+    agent = Mechanize.new
+    Game.where(:platform => "PS4").each do |game|
+      page = agent.get("http://www.3djuegos.com" + game.link)
+      if page.search("a.c2o.pad_3").length == 0
+        if page.search("dl")[0].search("dd").length == 5
+          game.game_type = page.search("dl")[0].search("dd")[1].try(:text)
+          game_link_1 = page.search("dl")[0].search("dd")[1].search("a")[0].try(:attributes)
+          game_link_2 = game_link_1["href"].try(:value) unless game_link_1.nil?
+          game_dlc = Game.find_by_link(game_link_2) unless game_link_2.nil?
+          game.game_dlc = game_dlc.try(:link)
+          game.game_dlc_id = game_dlc.try(:id)
+          game.developer = page.search("dl")[0].search("dd")[3].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[4].try(:text)
+        elsif page.search("dl")[0].search("dd").length == 4
+          game.developer = page.search("dl")[0].search("dd")[2].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[3].try(:text)
+        end
+      elsif page.search("a.c2o.pad_3").length > 0
+        if page.search("dl")[0].search("dd").length == 6
+          game.game_type = page.search("dl")[0].search("dd")[2].try(:text)
+          game_link_1 = page.search("dl")[0].search("dd")[2].search("a")[0].try(:attributes)
+          game_link_2 = game_link_1["href"].try(:value) unless game_link_1.nil?
+          game_dlc = Game.find_by_link(game_link_2) unless game_link_2.nil?
+          game.game_dlc = game_dlc.try(:link)
+          game.game_dlc_id = game_dlc.try(:id)
+          game.developer = page.search("dl")[0].search("dd")[4].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[5].try(:text)
+        elsif page.search("dl")[0].search("dd").length == 5
+          game.developer = page.search("dl")[0].search("dd")[3].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[4].try(:text)
+        end
+      end
+      game.players = page.search("dl")[1].search("dd")[1].try(:text)
+      game.duration = page.search("dl")[1].search("dd")[2].try(:text)
+      game.language = page.search("dl")[1].search("dd")[3].try(:text)
+      game.review_link = page.search(".pl2 li")[1].children[0].attributes["href"].try(:value)
+      if game.review_link == "javascript:void(0);"
+        game.review_link = nil
+      end
+      game.save
+      puts "*" * 150
+      puts game.inspect
+      puts "*" * 150
+    end
+  end
+
+  task populate_game_datails_ps3: :environment do
+    agent = Mechanize.new
+    Game.where(:platform => "PS3").each do |game|
+      page = agent.get("http://www.3djuegos.com" + game.link)
+      if page.search("a.c2o.pad_3").length == 0
+        if page.search("dl")[0].search("dd").length == 5
+          game.game_type = page.search("dl")[0].search("dd")[1].try(:text)
+          game_link_1 = page.search("dl")[0].search("dd")[1].search("a")[0].try(:attributes)
+          game_link_2 = game_link_1["href"].try(:value) unless game_link_1.nil?
+          game_dlc = Game.find_by_link(game_link_2) unless game_link_2.nil?
+          game.game_dlc = game_dlc.try(:link)
+          game.game_dlc_id = game_dlc.try(:id)
+          game.developer = page.search("dl")[0].search("dd")[3].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[4].try(:text)
+        elsif page.search("dl")[0].search("dd").length == 4
+          game.developer = page.search("dl")[0].search("dd")[2].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[3].try(:text)
+        end
+      elsif page.search("a.c2o.pad_3").length > 0
+        if page.search("dl")[0].search("dd").length == 6
+          game.game_type = page.search("dl")[0].search("dd")[2].try(:text)
+          game_link_1 = page.search("dl")[0].search("dd")[2].search("a")[0].try(:attributes)
+          game_link_2 = game_link_1["href"].try(:value) unless game_link_1.nil?
+          game_dlc = Game.find_by_link(game_link_2) unless game_link_2.nil?
+          game.game_dlc = game_dlc.try(:link)
+          game.game_dlc_id = game_dlc.try(:id)
+          game.developer = page.search("dl")[0].search("dd")[4].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[5].try(:text)
+        elsif page.search("dl")[0].search("dd").length == 5
+          game.developer = page.search("dl")[0].search("dd")[3].try(:text)
+          game.publisher = page.search("dl")[0].search("dd")[4].try(:text)
+        end
+      end
+      game.players = page.search("dl")[1].search("dd")[1].try(:text)
+      game.duration = page.search("dl")[1].search("dd")[2].try(:text)
+      game.language = page.search("dl")[1].search("dd")[3].try(:text)
+      game.review_link = page.search(".pl2 li")[1].children[0].attributes["href"].try(:value)
+      if game.review_link == "javascript:void(0);"
+        game.review_link = nil
+      end
+      game.save
+      puts "*" * 150
+      puts game.inspect
+      puts "*" * 150
+    end
+  end
 end

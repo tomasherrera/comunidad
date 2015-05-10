@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508021513) do
+ActiveRecord::Schema.define(version: 20150509072644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 20150508021513) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "link"
+    t.string   "developer"
+    t.string   "publisher"
+    t.string   "players"
+    t.string   "duration"
+    t.string   "language"
+    t.string   "review_link"
+    t.string   "game_type"
+    t.string   "game_dlc"
+    t.integer  "game_dlc_id"
   end
 
   create_table "identities", force: true do |t|
