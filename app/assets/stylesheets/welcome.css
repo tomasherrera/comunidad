@@ -224,10 +224,6 @@ img.not_adding{
   padding-right: 0px;
 }
 
-li span.badge{
-  background-color: #18bc9c;
-}
+li.badge{
 
-li.active span.badge{
-  background-color: #2c3e50;
 }

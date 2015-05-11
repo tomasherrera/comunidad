@@ -59,6 +59,10 @@
               DLC de
               %a{"href" => "", "ng-click" => "get_game(game.game_dlc_id)"}
                 {{game.game_dlc_title}}
+            %p{"ng-hide" => "game.juegos_score === null"}
+              %b
+                Puntaje 3Djuegos:
+              {{game.juegos_score}}
     %hr
     %ul.nav.nav-tabs
       %li.active{:role => "presentation"}
@@ -79,5 +83,10 @@
       %li{:role => "presentation"}
         %a{:href => ""}
           Reseñas
+          %span.badge
+            0
+      %li{:role => "presentation"}
+        %a{:href => ""}
+          Quién lo vende?
           %span.badge
             0
