@@ -29,6 +29,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     arel (5.0.1.20140414130214)
+    attr_required (1.0.0)
     bcrypt (3.1.10)
     builder (3.2.2)
     coderay (1.1.0)
@@ -52,6 +53,12 @@ GEM
     execjs (2.5.2)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    fb_graph2 (0.6.2)
+      activesupport (>= 3.2)
+      httpclient (>= 2.4)
+      multi_json
+      rack-oauth2 (>= 1.1)
+      url_safe_base64
     haml (4.0.6)
       tilt
     haml-rails (0.9.0)
@@ -69,6 +76,7 @@ GEM
       ruby_parser (~> 3.5)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     jbuilder (2.2.13)
       activesupport (>= 3.0.0, < 5)
@@ -127,6 +135,12 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rack (1.5.2)
+    rack-oauth2 (1.1.1)
+      activesupport (>= 2.3)
+      attr_required (>= 0.0.5)
+      httpclient (>= 2.4)
+      multi_json (>= 1.3.6)
+      rack (>= 1.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.1.6)
@@ -188,6 +202,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    url_safe_base64 (0.2.2)
     warden (1.2.3)
       rack (>= 1.0)
     webrobots (0.1.1)
@@ -198,6 +213,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
   devise
+  fb_graph2
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails

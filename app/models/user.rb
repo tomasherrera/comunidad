@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   require 'net/http'
+  require 'koala'
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
 
@@ -12,7 +13,6 @@ class User < ActiveRecord::Base
   has_many :ownedgames
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
-
     # Get the identity and user if they exist
     identity = Identity.find_for_oauth(auth)
 
@@ -40,7 +40,8 @@ class User < ActiveRecord::Base
           profile_picture: auth.info.image,
           #username: auth.info.nickname || auth.uid,
           email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0,20],
+          access_token: auth.credentials.token
         )
         #user.skip_confirmation!
         user.save!
@@ -57,5 +58,9 @@ class User < ActiveRecord::Base
 
   def email_verified?
     self.email && self.email !~ TEMP_EMAIL_REGEX
+  end
+
+  def belongs_to_group(user)
+    auth = Koala::Facebook::API.new(user.access_token)
   end
 end

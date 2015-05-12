@@ -26,6 +26,7 @@
     $scope.games_loaded = false;
     $scope.adding = "not_adding";
     $scope.focus = false;
+    $scope.games_loading = false;
 
     $scope.changeView = function(view){
       $location.path(view);
@@ -103,14 +104,17 @@
     };
 
     $scope.getAllGames = function(){
+      $scope.games_loading = true;
       if($scope.games_loaded){
         $scope.adding_game = true;
         $scope.not_adding_game = false;
         $scope.adding = "adding";
         $scope.focus = true;
+        $scope.games_loading = false;
       }else{
         AllGames.get().$promise.then(
           function( value ){
+            $scope.games_loading = false;
             $scope.games_loaded = true;
             $scope.games = value.games;
             $scope.adding_game = true;

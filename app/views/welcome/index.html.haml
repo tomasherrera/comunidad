@@ -66,9 +66,13 @@
           %legend
             Mis Juegos
           .well
-            %button.btn.btn-default.btn-sm{:type => "button", "ng-click" => "startAddingGame(); getAllGames();"}
-              %i.fa.fa-plus{"aria-hidden" => "true"}
-              Agregar Juego
+            %button.btn.btn-default.btn-sm{:type => "button", "ng-click" => "getAllGames();"}
+              %span{"ng-show" => "games_loading"}
+                %i.fa.fa-spinner.glyphicon-refresh-animate
+                Cargando
+              %span{"ng-hide" => "games_loading"}
+                %i.fa.fa-plus{"aria-hidden" => "true"}
+                Agregar Juego
 
           .row{"ng-repeat" => "games in current_owned_games", "ng-click" => "stopAddingGame()"}
             .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "ownedgame in games"}

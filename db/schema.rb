@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509072644) do
+ActiveRecord::Schema.define(version: 20150511212526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cards", force: true do |t|
+    t.string   "suit"
+    t.string   "value"
+    t.integer  "deck_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cards", ["deck_id"], name: "index_cards_on_deck_id", using: :btree
+
+  create_table "decks", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "games", force: true do |t|
     t.string   "title"
@@ -91,6 +106,7 @@ ActiveRecord::Schema.define(version: 20150509072644) do
     t.datetime "confirmed_at"
     t.string   "unconfirmed_email"
     t.string   "profile_picture"
+    t.string   "access_token"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
