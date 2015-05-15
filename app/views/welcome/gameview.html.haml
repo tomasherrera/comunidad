@@ -59,14 +59,11 @@
               DLC de
               %a{"href" => "", "ng-click" => "get_game(game.game_dlc_id)"}
                 {{game.game_dlc_title}}
-            %p{"ng-hide" => "game.juegos_score === null"}
-              %b
-                Puntaje 3Djuegos:
-              {{game.juegos_score}}
     %hr
     %ul.nav.nav-tabs
       %li.active{:role => "presentation"}
         %a{:href => ""}
+          %i.fa.fa-comments
           Comentarios
           %span.badge
             0
@@ -90,3 +87,34 @@
           Quién lo vende?
           %span.badge
             0
+    .comments-section
+      .container
+        .row{"ng-repeat" => "comment in game_comments"}
+          .col-sm-1
+            .thumbnail
+              %img.img-responsive.user-photo{"ng-src" => "{{comment.user_profile_pic}}?type=normal"}/
+            / /thumbnail
+          / /col-sm-1
+          .col-sm-7
+            .panel.panel-default
+              .panel-heading
+                %strong {{comment.user_first_name}}
+                %span.text-muted - hace {{comment.created_at}}
+              .panel-body
+                {{comment.content}}
+        %form{"ng-submit" => "saveGameComment(game)"}
+          .row
+            .col-sm-1
+              .thumbnail
+                %img.img-responsive.user-photo{:src => "#{current_user.profile_picture}?type=normal"}/
+              / /thumbnail
+            / /col-sm-1
+            .col-sm-7
+              .panel.panel-default{:style => "margin-bottom: 3px;"}
+                .panel-heading
+                  %strong
+                    = "#{current_user.first_name} dice:"
+                %textarea.panel-body.form-control{:rows => "2", :placeholder => "Escribe tu comentario aqui...", "ng-model" => "content"}
+              %button.btn.btn-success{:type => "submit", :style => "float:right;"}
+                %i.fa.fa-comment
+                Comentar

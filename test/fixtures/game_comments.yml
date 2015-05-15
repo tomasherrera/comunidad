@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 
+  game_id: 
+  content: MyText
+  likes: 1
+  dislikes: 1
+  flags: 1
+
+two:
+  user_id: 
+  game_id: 
+  content: MyText
+  likes: 1
+  dislikes: 1
+  flags: 1

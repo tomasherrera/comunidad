@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :game_comments
+
   resources :ownedgames
   get "all_user_games" => "ownedgames#index"
   get 'games/index'

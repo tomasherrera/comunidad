@@ -51,12 +51,7 @@
           / END MENU
       .col-md-6
         .profile-content{"ng-show" => "isSelectedTab(1)"}
-          - Game.all.limit(10).each do |game|
-            = image_tag(game.small_cover)
-            %legend
-              = link_to game.title, "http://www.3djuegos.com#{game.link}"
-            = game.description
-            %hr
+          Vacio
         .profile-content{"ng-show" => "isSelectedTab(3)"}
           Cofiguración de Cuenta
         .profile-content{"ng-show" => "isSelectedTab(4)"}

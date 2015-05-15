@@ -15,9 +15,11 @@
   app.controller("WelcomeController", function($scope, $resource, $routeParams, $location) {
     var OwnedGames = $resource("/ownedgames.json", {}, {});
     var AllGames = $resource("/games/index.json", {}, {});
+    var GameComments = $resource("/game_comments.json", {}, {});
     $scope.current_owned_games = [];
     $scope.ownedgames_ids = [];
     $scope.games = [];
+    $scope.game_comments = [];
     $scope.tab = 2;
     $scope.not_adding_game = true;
     $scope.adding_game = false;
@@ -27,6 +29,7 @@
     $scope.adding = "not_adding";
     $scope.focus = false;
     $scope.games_loading = false;
+    $scope.current_game_id = null;
 
     $scope.changeView = function(view){
       $location.path(view);
@@ -50,6 +53,30 @@
         }
       );
     };
+
+    $scope.getGameComments = function(game_id){
+      GameComments.get({ game_id:game_id }).$promise.then(
+        function( value ){
+          $scope.game_comments = value.game_comments;
+        },
+        function( error ){/*Do something with error*/}
+      );
+    }
+
+    $scope.saveGameComment = function(game){
+      var game_comment = new GameComments();
+      game_comment.game_id = game.id;
+      game_comment.content = this.content;
+      game_comment.$save().then(
+        function( value ){
+          $scope.getGameComments(game.id);
+          $scope.content = "";
+        },
+        function( error ){
+          alert("Parece que ya agregaste este comentario a este juego");
+        }
+      );
+    }
 
     $scope.selectTab = function(tab){
       $scope.tab = tab;
@@ -97,6 +124,7 @@
       Game.get({id:game_id}).$promise.then(
         function( value ){
           $scope.game = value.game;
+          $scope.getGameComments(game_id);
           $scope.changeView('/games/' + game_id);
         },
         function( error ){/*Do something with error*/}

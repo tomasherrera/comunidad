@@ -12,6 +12,7 @@ gem 'mechanize'
 gem 'pry'
 gem 'sprockets', '~> 2.0'
 gem 'ng-rails-csrf'
+gem 'rails-i18n', '~> 4.0.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
