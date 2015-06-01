@@ -21,4 +21,6 @@ json.game do
   json.game_dlc @game.game_dlc
   json.game_dlc_id @game.game_dlc_id
   json.game_dlc_title @game_dlc.try(:title)
+  json.owned @game.is_owned?(current_user.id)
+  json.owned_id @game.owned_id(current_user.id) if @game.is_owned?(current_user.id)
 end

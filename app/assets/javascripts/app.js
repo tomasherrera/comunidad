@@ -1,5 +1,5 @@
 (function() {
-  var app = angular.module('comunidad', ["ngResource", 'ngRoute', 'ngAnimate', 'ng-rails-csrf']);
+  var app = angular.module('comunidad', ["ngResource", 'ngRoute', 'ngAnimate', 'ng-rails-csrf', 'flash']);
 
   app.config(function($routeProvider) {
     $routeProvider
@@ -12,7 +12,7 @@
         ;
   });
 
-  app.controller("WelcomeController", function($scope, $resource, $routeParams, $location) {
+  app.controller("WelcomeController", function($scope, $resource, $routeParams, $location, Flash) {
     var OwnedGames = $resource("/ownedgames.json", {}, {});
     var AllGames = $resource("/games/index.json", {}, {});
     var GameComments = $resource("/game_comments.json", {}, {});
@@ -41,12 +41,13 @@
 
     $scope.saveOwnedGame = function(game){
       var ownedgame = new OwnedGames();
-      ownedgame.user_id = "1";
       ownedgame.game_id = game.id;
       ownedgame.formato = "Fisico";
       ownedgame.$save().then(
         function( value ){
           $scope.getAllOwnedGames();
+          $scope.get_game($routeParams.id);
+          Flash.create('success', "Juego Agregado", 'success');
         },
         function( error ){
           alert("Parece que ya agregaste este juego a tu libreria");
@@ -111,6 +112,8 @@
           //success
           function( value ){
             $scope.getAllOwnedGames();
+            $scope.get_game($routeParams.id);
+            Flash.create('danger', "Juego Eliminado", 'success');
           },
           //error
           function( error ){/*Do something with error*/}
@@ -120,12 +123,14 @@
 
     var Game = $resource("/games/:id.json", {id: "@id"}, {});
 
-    $scope.get_game = function(game_id){
+    $scope.get_game = function(game_id, oid){
       Game.get({id:game_id}).$promise.then(
         function( value ){
           $scope.game = value.game;
           $scope.getGameComments(game_id);
+          $scope.ownedgame_id = oid;
           $scope.changeView('/games/' + game_id);
+          $scope.game_loaded = true;
         },
         function( error ){/*Do something with error*/}
       );
@@ -161,7 +166,7 @@
       if ($location.path() === "/"){
         $scope.dashboard_style = "active";
         $scope.profile_style = "";
-      }else if ($location.path() === "/games/" + $routeParams.id){
+      }else if ($location.path() === "/games/" + $routeParams.id && !$scope.game_loaded){
         $scope.get_game($routeParams.id);
       };
     };

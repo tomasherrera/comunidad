@@ -78,7 +78,7 @@
                     .game-hover-title {{ownedgame.game.title}}
                     %p
                       %a.label.label-danger{:href => "", "ng-click" => "delete(ownedgame.game, ownedgame.id, $index)"} Eliminar
-                      %a.label.label-default{:href => "", "ng-click" => "get_game(ownedgame.game.id)"} Ver más
+                      %a.label.label-default{:href => "", "ng-click" => "get_game(ownedgame.game.id, ownedgame.id)"} Ver más
 
       .col-md-3{"ng-show" => "adding_game"}
         .game-search
