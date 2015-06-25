@@ -73,12 +73,15 @@
             .col-xs-18.col-sm-6.col-md-2{"ng-repeat" => "ownedgame in games"}
               .thumbnail
                 %img.img-thumbnail{"ng-src" => "{{ownedgame.game.small_cover}}", :style => "width: 570px;", "ng-class" => "adding"}
-                %div{"ng-hide" => "adding_game"}
+                %div{"ng-hide" => "adding_game || deleting"}
                   .caption{"ng-class" => "ownedgame.game.platform"}
                     .game-hover-title {{ownedgame.game.title}}
-                    %p{"ng-hide" => "deleting"}
-                      %a.label.label-danger{:href => "", "ng-click" => "delete(ownedgame.game, ownedgame.id, $index)"} Eliminar
+                    %p
+                      %a.label.label-danger{:href => "", "ng-click" => "delete(ownedgame.game, ownedgame.id, $index); deleting = true;"} Eliminar
                       %a.label.label-default{:href => "", "ng-click" => "get_game(ownedgame.game.id, ownedgame.id)"} Ver más
+                %div{"ng-show" => "deleting"}
+                  .caption{"ng-class" => "ownedgame.game.platform"}
+                    .game-hover-title Eliminando ...
 
       .col-md-3{"ng-show" => "adding_game"}
         .game-search
