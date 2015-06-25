@@ -76,7 +76,7 @@
                 %div{"ng-hide" => "adding_game"}
                   .caption{"ng-class" => "ownedgame.game.platform"}
                     .game-hover-title {{ownedgame.game.title}}
-                    %p
+                    %p{"ng-hide" => "deleting"}
                       %a.label.label-danger{:href => "", "ng-click" => "delete(ownedgame.game, ownedgame.id, $index)"} Eliminar
                       %a.label.label-default{:href => "", "ng-click" => "get_game(ownedgame.game.id, ownedgame.id)"} Ver más
 

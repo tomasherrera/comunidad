@@ -30,6 +30,7 @@
     $scope.focus = false;
     $scope.games_loading = false;
     $scope.current_game_id = null;
+    $scope.deleting = false;
 
     $scope.changeView = function(view){
       $location.path(view);
@@ -108,9 +109,11 @@
     $scope.delete = function(game, ownedgame_id, idx){
       var r = confirm("Estás seguro que deseas eliminar a " + game.title + " de tu libreria de juegos?");
       if (r == true){
+        $scope.deleting = true;
         OwnedGame.remove({ id:ownedgame_id }).$promise.then(
           //success
           function( value ){
+            $scope.deleting = false;
             $scope.getAllOwnedGames();
             $scope.get_game($routeParams.id);
             Flash.create('danger', "Juego Eliminado", 'success');
